@@ -9,5 +9,5 @@ const skillSchema = new Schema(
   { timestamps: true },
 );
 
-const skillModel = mongoose.model('skill', skillSchema);
+const skillModel = mongoose.model("skill", skillSchema);
 module.exports = skillModel;
