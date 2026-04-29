@@ -2,8 +2,9 @@ const UserModel = require("../models/user");
 const { registerSchema, loginSchema } = require("../validation/userValidation");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
+const errorMiddleware = require("../middlewares/errorMiddleware");
 
-const register = async (req, res) => {
+const register = async (req, res, next) => {
   try {
     const validation = registerSchema.safeParse(req.body);
 
@@ -29,11 +30,11 @@ const register = async (req, res) => {
       message: "register completed",
     });
   } catch (error) {
-    res.status(500).json({ message: error.message });
+    next(error);
   }
 };
 
-const login = async (req, res) => {
+const login = async (req, res, next) => {
   try {
     const validation = loginSchema.safeParse(req.body);
 
@@ -65,9 +66,7 @@ const login = async (req, res) => {
       });
     }
   } catch (error) {
-    return res.status(404).json({
-      message: error.message,
-    });
+    next(error);
   }
 };
 
@@ -87,9 +86,7 @@ const getProfile = async (req, res) => {
       });
     }
   } catch (error) {
-    res.status(404).json({
-      message: error.message,
-    });
+    next(error);
   }
 };
 

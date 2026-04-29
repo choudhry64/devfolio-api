@@ -1,7 +1,16 @@
 const projectModel = require("../models/project");
+const errorMiddleware = require("../middlewares/errorMiddleware");
+const projectSchema = require("../validation/projectValidation");
 
 const createProject = async (req, res) => {
   try {
+    const validation = projectSchema.safeParse(req.body);
+
+    if (!validation.success) {
+      return res.status(400).json({
+        message: validation.error,
+      });
+    }
     const {
       title,
       description,
@@ -31,13 +40,11 @@ const createProject = async (req, res) => {
       project: newProject,
     });
   } catch (error) {
-    res.status(404).json({
-      message: error.message,
-    });
+    next(error);
   }
 };
 
-const getProject = async (req, res) => {
+const getProject = async (req, res, next) => {
   try {
     const userId = req.user.userId;
 
@@ -55,13 +62,11 @@ const getProject = async (req, res) => {
       });
     }
   } catch (error) {
-    res.status(403).json({
-      message: error.message,
-    });
+    next(error);
   }
 };
 
-const updateProject = async (req, res) => {
+const updateProject = async (req, res, next) => {
   try {
     const projectId = req.params.projectId;
 
@@ -78,13 +83,11 @@ const updateProject = async (req, res) => {
       });
     }
   } catch (error) {
-    res.status(404).json({
-      message: error.message,
-    });
+    next(error);
   }
 };
 
-const deleteProject = async (req, res) => {
+const deleteProject = async (req, res, next) => {
   try {
     const projectId = req.params.projectId;
 
@@ -100,9 +103,7 @@ const deleteProject = async (req, res) => {
       });
     }
   } catch (error) {
-    res.status(404).json({
-      message: error.message,
-    });
+    next(error);
   }
 };
 
