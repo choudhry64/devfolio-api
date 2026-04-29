@@ -1,8 +1,7 @@
 const projectModel = require("../models/project");
-const errorMiddleware = require("../middlewares/errorMiddleware");
 const projectSchema = require("../validation/projectValidation");
 
-const createProject = async (req, res) => {
+const createProject = async (req, res, next) => {
   try {
     const validation = projectSchema.safeParse(req.body);
 
@@ -37,7 +36,7 @@ const createProject = async (req, res) => {
     });
     res.status(201).json({
       message: "project created",
-      project: newProject,
+      project: Create,
     });
   } catch (error) {
     next(error);

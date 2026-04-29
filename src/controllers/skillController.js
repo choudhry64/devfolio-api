@@ -1,5 +1,4 @@
 const skillModel = require("../models/skill");
-const errorMiddleware = require("../middlewares/errorMiddleware");
 const skillSchema = require("../validation/skillValidation");
 
 const createSkill = async (req, res, next) => {
@@ -28,7 +27,7 @@ const createSkill = async (req, res, next) => {
       });
     }
   } catch (error) {
-    next(erro);
+    next(error);
   }
 };
 
