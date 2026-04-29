@@ -47,7 +47,7 @@ const getProject = async (req, res) => {
 
     if (Get) {
       res.json({
-        project: project,
+        Get: Get,
       });
     } else {
       res.status(404).json({
