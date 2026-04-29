@@ -60,7 +60,7 @@ const getProfile = async (req, res) => {
   try {
     const userId = req.user.userId;
 
-    const user = await UserModel.findById(userId);
+    const user = await UserModel.findById(userId).select("-password");
 
     if (user){
       res.json({
