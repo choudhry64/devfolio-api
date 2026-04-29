@@ -15,7 +15,7 @@ const createProject = async (req, res) => {
 
     const userId = req.user.userId;
 
-    const newProject = await projectModel.create({
+    const Create = await projectModel.create({
       userId: userId,
       title: title,
       description: description,
@@ -41,11 +41,11 @@ const getProject = async (req, res) => {
   try {
     const userId = req.user.userId;
 
-    const project = await projectModel.find({
+    const Get = await projectModel.find({
       userId: userId,
     });
 
-    if (project) {
+    if (Get) {
       res.json({
         project: project,
       });
@@ -61,4 +61,49 @@ const getProject = async (req, res) => {
   }
 };
 
-module.exports = { createProject, getProject };
+const updateProject = async (req, res) => {
+  try {
+    const projectId = req.params.projectId;
+
+    const Update = await projectModel.findByIdAndUpdate(projectId, req.body, {
+      new: true,
+    });
+    if (Update) {
+      res.status(201).json({
+        message: "Project Updated",
+      });
+    } else {
+      res.json({
+        message: "Not found",
+      });
+    }
+  } catch (error) {
+    res.status(404).json({
+      message: error.message,
+    });
+  }
+};
+
+const deleteProject = async (req, res) => {
+  try {
+    const projectId = req.params.projectId;
+
+    const Delete = await projectModel.findByIdAndDelete(projectId);
+
+    if (Delete) {
+      res.status(201).json({
+        message: "Project deleted",
+      });
+    } else {
+      res.json({
+        message: "Not found any project",
+      });
+    }
+  } catch (error) {
+    res.status(404).json({
+      message: error.message,
+    });
+  }
+};
+
+module.exports = { createProject, getProject, updateProject, deleteProject };
